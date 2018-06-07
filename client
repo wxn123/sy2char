@@ -1,0 +1,26 @@
+#!/usr/bin/env python
+# -*- coding=utf-8 -*-
+
+import socket
+import sys
+
+
+def socket_client():
+    try:
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)#创建TCP Socket
+        s.connect(('192.168.236.129', 6666))# 使用socket的connect连接到服务器（服务器的IP、端口号）
+    except socket.error as msg:
+        print msg
+        sys.exit(1)
+    print s.recv(1024)# 打印出从服务器返回的信息
+    while 1:
+        data = raw_input('please input work: ')#把输入的数据存在data里
+        s.send(data)# 发送数据到服务器
+        print s.recv(1024) # 打印出从服务器返回的信息
+        if data == 'exit':#如果数据为空
+            break#退出循环
+    s.close()#关闭连接
+
+
+if __name__ == '__main__':
+    socket_client()
